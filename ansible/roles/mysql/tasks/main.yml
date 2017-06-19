@@ -1,0 +1,17 @@
+---
+
+- name:              make sure docker is enabled
+  systemd:
+    name:            docker
+    state:           restarted
+    enabled:         yes
+
+- name:              install mysql docker package
+  docker_container:
+    name:            MySQL
+    image:           mysql/mysql-server
+    env: 'MYSQL_ROOT_PASSWORD={{mysql_root_password}}'
+    exposed_ports:
+      - 3306
+    published_ports:
+      - 3306:3306

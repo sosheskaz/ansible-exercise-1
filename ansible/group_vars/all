@@ -12,6 +12,7 @@ wp_site_url: http://myblog.com
 
 # You shouldn't need to change this.
 mysql_port: 3306
+mysql_root_password: password
 
 # This is used for the nginx server configuration, but access to the
 # WordPress site is not restricted by a named host.

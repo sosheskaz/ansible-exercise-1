@@ -1,0 +1,7 @@
+---
+- name: General setup
+  hosts: centos_local
+  remote_user: root
+  roles:
+    - docker
+    - mysql

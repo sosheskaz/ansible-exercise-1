@@ -1,0 +1,22 @@
+---
+- name:       ensure epel repo key is available
+  rpm_key:
+    key:      'http://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7'
+    state:    present
+
+- name: ensure epel repo is available
+  yum:        name='epel-release' state=present
+
+- name:       ensure docker is installed
+  yum:        name={{ item }} state=present
+  with_items:
+  - epel-release
+  - python
+  - python-virtualenv
+  - python-pip
+  - docker
+
+- name:       ensure docker python support is installed
+  pip:
+    name:     "docker-py"
+    state:    latest
