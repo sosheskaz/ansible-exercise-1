@@ -1,7 +1,15 @@
 ---
-- name: General setup
-  hosts: centos_local
-  remote_user: root
+- name:        set up ec2
+  hosts:       local
+  roles:
+    - aws
+- name:        run ansible
+  hosts:       ec2
+  remote_user: ec2-user
+  become:      yes
+  become_user: root
   roles:
     - docker
     - mysql
+    - nginx
+    - wordpress

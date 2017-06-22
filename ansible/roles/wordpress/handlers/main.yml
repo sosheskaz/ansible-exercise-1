@@ -1,0 +1,7 @@
+---
+- name:    restart php-fpm
+  service: name=php-fpm state=restarted
+
+
+- name:    initialize wordpress
+  shell:   wp core install --path=/srv/wordpress/ --url='{{ wp_home }}' --title="{{ wp_title }}" --admin_user=admin --admin_password='{{ wp_admin_pass }}' --admin_email='{{ wp_admin_email }}'

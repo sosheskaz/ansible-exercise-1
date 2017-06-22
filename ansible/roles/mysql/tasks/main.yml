@@ -1,17 +1,64 @@
 ---
+- name:              install epel-release
+  yum:               name=epel-release state=latest
+
+- name:              install yum dependencies
+  yum:               name={{ item }} state=present
+  with_items:        '{{ mysql_dependencies.yum }}'
+
+- name:              install pip dependencies
+  pip:               name={{ item }} state=present
+  with_items:        '{{ mysql_dependencies.pip }}'
+
+- name:              Add group "mysql"
+  group:             name=mysql
+
+- name:              Add user "mysql"
+  user:              name=mysql group=mysql home=/srv/mysql/
 
 - name:              make sure docker is enabled
-  systemd:
+  service:
     name:            docker
-    state:           restarted
+    state:           started
     enabled:         yes
+
+- name:              copy mycnf
+  template:
+    src:             my.cnf
+    dest:            /root/.my.cnf
 
 - name:              install mysql docker package
   docker_container:
     name:            MySQL
     image:           mysql/mysql-server
-    env: 'MYSQL_ROOT_PASSWORD={{mysql_root_password}}'
+    user:            mysql
+    env:
+      MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
+      MYSQL_ROOT_HOST={{ docker_gateway_ip }}
     exposed_ports:
       - 3306
-    published_ports:
-      - 3306:3306
+    state:           stopped
+- name:              overwrite MySQL my.cnf
+  template:          src=my.cnf dest=/etc
+- name:              copy my.cnf to mysql docker container
+  shell:             docker cp /etc/my.cnf MySQL:/etc/my.cnf
+- name:              (re)start mysql docker
+  docker_container:
+    name:            MySQL
+    user:            mysql
+    state:           started
+
+# There's probably a better way to do this in ansible, but I couldn't dig up
+# good documentation.
+- name:              get mysql container id
+  shell:             docker inspect MySQL | jq '.[0] | .Id' | cut -d '"' -f 2
+  register:          docker_mysql_id_stdout
+- name:              store mysql container id
+  set_fact:
+    docker_mysql_id: '{{ docker_mysql_id_stdout.stdout }}'
+- name:              get mysql container ip
+  shell:             "docker network inspect bridge | jq \'.[0] | .Containers | .[\"{{docker_mysql_id}}\"] | .IPv4Address\' | cut -d \'\"\' -f 2 | cut -d \'/\' -f 1"
+  register:          docker_mysql_ip_stdout
+- name:              store mysql container ip
+  set_fact:
+    docker_mysql_ip: '{{ docker_mysql_ip_stdout.stdout }}'

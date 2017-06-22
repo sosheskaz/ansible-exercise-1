@@ -16,7 +16,7 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', '{{ wp_db_name }}');
+define('DB_NAME', 'wordpress');
 
 /** MySQL database username */
 define('DB_USER', '{{ wp_db_user }}');
@@ -25,7 +25,7 @@ define('DB_USER', '{{ wp_db_user }}');
 define('DB_PASSWORD', '{{ wp_db_password }}');
 
 /** MySQL hostname */
-define('DB_HOST', 'localhost');
+define('DB_HOST', '{{ docker_mysql_ip }}');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
@@ -80,7 +80,8 @@ define( 'AUTOMATIC_UPDATER_DISABLED', {{auto_up_disable}} );
 /** Define AUTOMATIC Updates for Components. */
 define( 'WP_AUTO_UPDATE_CORE', {{core_update_level}} );
 
-define( 'WP_SITEURL', '{{wp_site_url}}')
+define('WP_HOME', '{{ wp_home }}');
+define('WP_SITEURL', '{{ wp_home }}');
 
 /* That's all, stop editing! Happy blogging. */
 

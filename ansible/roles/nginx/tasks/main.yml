@@ -1,11 +1,30 @@
 ---
-- name:     install nginx
-  yum:
-    name:   nginx
-    state:  latest
+- name:       install yum dependencies
+  yum:        name={{ item }} state=present
+  with_items: '{{ nginx_dependencies.yum }}'
 
-- name:     copy nginx wordpress conf
+- name:       install pip dependencies
+  pip:        name={{ item }} state=present
+  with_items: '{{ nginx_dependencies.pip }}'
+
+- name:       start nginx
+  service:
+    name:     nginx
+    state:    started
+
+- name:       create nginx ssl directory
+  file:
+    name:     /etc/nginx/ssl/
+    state:    directory
+
+- name:       create self-signed ssl cert
+  shell:      openssl req -new -nodes -x509 -subj '/C=US/ST=Illinois/L=Rockford/O=EricMiller' -days 3650 -keyout /etc/nginx/ssl/cert.key -out /etc/nginx/ssl/cert.crt -extensions v3_ca
+  args:
+    creates:  /etc/nginx/ssl/cert.crt
+  notify:     restart nginx
+
+- name:       copy nginx wordpress conf
   template:
-    src:    default.conf
-    dest:   /etc/nginx/conf.d/default.conf
-    notify: restart nginx
+    src:      default.conf
+    dest:     /etc/nginx/nginx.conf
+  notify:     restart nginx
