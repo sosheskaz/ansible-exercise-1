@@ -18,7 +18,7 @@
     state:    directory
 
 - name:       create self-signed ssl cert
-  shell:      openssl req -new -nodes -x509 -subj '/C=US/ST=Illinois/L=Rockford/O=EricMiller' -days 3650 -keyout /etc/nginx/ssl/cert.key -out /etc/nginx/ssl/cert.crt -extensions v3_ca
+  shell:      openssl req -new -nodes -x509 -subj '/C=US/ST=Illinois/L=Rockford/O=EricMiller/emwordpress' -days 3650 -keyout /etc/nginx/ssl/cert.key -out /etc/nginx/ssl/cert.crt -extensions v3_ca
   args:
     creates:  /etc/nginx/ssl/cert.crt
   notify:     restart nginx
