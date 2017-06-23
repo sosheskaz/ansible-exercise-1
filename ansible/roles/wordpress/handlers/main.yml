@@ -1,18 +1,18 @@
 ---
-- name:    restart php-fpm
-  service: name=php-fpm state=restarted
+- name:             restart php-fpm
+  service:          name=php-fpm state=restarted
 
-- name:    initialize wordpress
-  shell:   wp core install --path={{ wp_install }} --url='{{ wp_home }}' --title="{{ wp_title }}" --admin_user=admin --admin_password='{{ wp_admin_pass }}' --admin_email='{{ wp_admin_email }}'
+- name:             initialize wordpress
+  shell:            wp core install --path={{ wp_install }} --url='{{ wp_home }}' --title="{{ wp_title }}" --admin_user=admin --admin_password='{{ wp_admin_pass }}' --admin_email='{{ wp_admin_email }}'
 
-- name: download weather information
+- name:             download weather information
   uri:
-    url: https://www.metaweather.com/api/location/{{ metaweather_woeid }}/
+    url:            https://www.metaweather.com/api/location/{{ metaweather_woeid }}/
     return_content: yes
-  register: metaweather_data
+  register:         metaweather_data
 
-- name: create wordpress weather post file
-  template: src=weather-post.txt dest={{ wp_install }}
+- name:             create wordpress weather post file
+  template:         src=weather-post.txt dest={{ wp_install }}
 
-- name: create wordpress weather post
-  shell: wp post create {{ wp_install }}/weather-post.txt --post_title='Weather Post!' --path={{ wp_install }} --post_status=publish
+- name:             create wordpress weather post
+  shell:            wp post create {{ wp_install }}/weather-post.txt --post_title='Weather Post!' --path={{ wp_install }} --post_status=publish

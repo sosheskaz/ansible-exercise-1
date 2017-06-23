@@ -38,6 +38,7 @@ core_update_level: true
 aws_amazon_linux_image: ami-643b1972
 aws_image: '{{ aws_amazon_linux_image }}'
 aws_instance_type: t2.micro
+aws_region: us-east-1
 
 aws_dependencies:
   pip:
