@@ -14,11 +14,11 @@
 
 - name:       create nginx ssl directory
   file:
-    name:     /etc/nginx/ssl/
+    name:     {{ nginx_ssl_dir }}
     state:    directory
 
 - name:       create self-signed ssl cert
-  shell:      openssl req -new -nodes -x509 -subj '/O=EricMiller/OU=WPProject/CN={{ inventory_hostname }}' -days 3650 -keyout /etc/nginx/ssl/cert.key -out /etc/nginx/ssl/cert.crt -extensions v3_ca
+  shell:      openssl req -new -nodes -x509 -subj '/O=EricMiller/OU=WPProject/CN={{ inventory_hostname }}' -days 3650 -keyout '{{ nginx_ssl_dir}}/cert.key' -out '{{ nginx_ssl_dir }}/cert.crt' -extensions v3_ca
   args:
     creates:  /etc/nginx/ssl/cert.crt
   notify:     restart nginx
