@@ -20,9 +20,9 @@
     exact_count:                  1
     key_name:                     exercise-1
     instance_tags:
-      class:                      wordpress
+      class:                      '{{ ec2_tag }}'
     count_tag:
-      class:                      wordpress
+      class:                      '{{ ec2_tag }}'
 
 - name:                           gather ec2 facts
   ec2_remote_facts:
@@ -30,7 +30,7 @@
     aws_secret_key:               '{{ aws_secret_key }}'
     region:                       '{{ aws_region }}'
     filters:
-      'tag:class':                wordpress
+      'tag:class':                '{{ ec2_tag }}'
       instance-state-name:        running
   register:                       ec2_info
 
