@@ -14,7 +14,7 @@
     image:                        '{{ aws_image }}'
     instance_type:                '{{ aws_instance_type }}'
     wait:                         yes
-    region:                       {{ aws_region }}
+    region:                       '{{ aws_region }}'
     assign_public_ip:             yes
     vpc_subnet_id:                '{{ aws_vpc_id }}'
     exact_count:                  1

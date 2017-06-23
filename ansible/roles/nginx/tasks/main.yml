@@ -14,7 +14,7 @@
 
 - name:       create nginx ssl directory
   file:
-    name:     {{ nginx_ssl_dir }}
+    name:     '{{ nginx_ssl_dir }}'
     state:    directory
 
 - name:       create self-signed ssl cert
