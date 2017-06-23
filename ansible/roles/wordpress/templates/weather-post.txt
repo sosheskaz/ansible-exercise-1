@@ -1,0 +1,14 @@
+Current weather for {{ metaweather_data.json.title }} as of {{ metaweather_data.json.consolidated_weather[0].applicable_date }}:
+
+{{ metaweather_data.json.consolidated_weather[0].weather_state_name }} <img src="https://www.metaweather.com/static/img/weather/{{ metaweather_data.json.consolidated_weather[0].weather_state_abbr }}.svg" />
+
+Currently: {{ metaweather_data.json.consolidated_weather[0].the_temp }}°C
+High: {{ metaweather_data.json.consolidated_weather[0].max_temp }}°C
+Low: {{ metaweather_data.json.consolidated_weather[0].min_temp }}°C
+
+Wind speed: {{ metaweather_data.json.consolidated_weather[0].wind_speed }} MPH {{ metaweather_data.json.consolidated_weather[0].wind_direction_compass }}
+Humidity: {{ metaweather_data.json.consolidated_weather[0].humidity }}%
+Visibility: {{ metaweather_data.json.consolidated_weather[0].visibility }} miles
+Air Pressure: {{ metaweather_data.json.consolidated_weather[0].air_pressure }}mb
+
+Provided by <a href="https://www.metaweather.com">MetaWeather</a>

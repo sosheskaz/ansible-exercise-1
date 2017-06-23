@@ -37,6 +37,9 @@
   notify:
   - restart php-fpm
   - initialize wordpress
+  - download weather information
+  - create wordpress weather post file
+  - create wordpress weather post
 
 - name:             create wordpress database user
   mysql_user:
