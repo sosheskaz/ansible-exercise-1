@@ -70,7 +70,6 @@ nginx_dependencies:
 
 wordpress_dependencies:
   yum:
-  - mysql
   - mysql-devel
   - gcc
   - php
