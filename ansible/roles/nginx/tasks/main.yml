@@ -7,24 +7,24 @@
   pip:        name={{ item }} state=present
   with_items: '{{ nginx_dependencies.pip }}'
 
-- name:       start nginx
-  service:
-    name:     nginx
-    state:    started
-
 - name:       create nginx ssl directory
   file:
     name:     '{{ nginx_ssl_dir }}'
     state:    directory
 
+# Since this is an instance exposed to the WWW, I don't want to send credentials
+# in plaintext if I'm using the web page.
 - name:       create self-signed ssl cert
   shell:      openssl req -new -nodes -x509 -subj '/O=EricMiller/OU=WPProject/CN={{ inventory_hostname }}' -days 3650 -keyout '{{ nginx_ssl_dir}}/cert.key' -out '{{ nginx_ssl_dir }}/cert.crt' -extensions v3_ca
   args:
     creates:  /etc/nginx/ssl/cert.crt
-  notify:     restart nginx
 
 - name:       copy nginx wordpress conf
   template:
     src:      default.conf
     dest:     /etc/nginx/nginx.conf
-  notify:     restart nginx
+
+- name:       restart nginx
+  service:
+    name:     nginx
+    state:    restarted

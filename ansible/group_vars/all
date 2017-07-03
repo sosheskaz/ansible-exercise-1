@@ -11,6 +11,7 @@ wp_home: 'https://{{ inventory_hostname }}'
 wp_title: An Example WordPress
 wp_admin_email: emiller@cleo.com
 wp_install: /srv/wordpress
+wp_cli: /usr/bin/wp
 
 metaweather_woeid: 2379574
 
