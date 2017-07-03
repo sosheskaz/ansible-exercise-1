@@ -49,7 +49,6 @@ aws_dependencies:
 
 docker_dependencies:
   yum:
-  - epel-release
   - python
   - python-virtualenv
   - python-pip

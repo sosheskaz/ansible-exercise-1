@@ -38,7 +38,7 @@
   add_host:
     hostname:                     '{{ item.public_ip_address }}'
     groupname:                    ec2
-    ansible_ssh_private_key_file: '~/exercise-1.pem'
+    ansible_ssh_private_key_file: '{{ aws_ssh_key }}'
   with_items:                     '{{ ec2_info.instances }}'
 
 - name:                           wait for ssh to come up
