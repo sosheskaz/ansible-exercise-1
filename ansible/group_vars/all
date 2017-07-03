@@ -57,7 +57,6 @@ docker_dependencies:
 
 mysql_dependencies:
   yum:
-  - docker
   - jq
   pip:
   - docker-py

@@ -30,16 +30,17 @@
     user:            mysql
     state:           started
 
-# There's probably a better way to do this in ansible, but I couldn't dig up
-# good documentation.
 - name:              get mysql container id
   shell:             docker inspect MySQL | jq '.[0] | .Id' | cut -d '"' -f 2
   register:          docker_mysql_id_stdout
 - name:              store mysql container id
   set_fact:
     docker_mysql_id: '{{ docker_mysql_id_stdout.stdout }}'
+
 # This doesn't work if you don't escape the single quotes. It might be a bug in
 # ansible, or there may be something wrong with my formatting.
+# Another note: While this looks a bit ugly, it's ultimately cleaner than using
+# the appropriate ansible modules.
 - name:              get mysql container ip
   shell:             "docker network inspect bridge | jq \'.[0] | .Containers | .[\"{{docker_mysql_id}}\"] | .IPv4Address\' | cut -d \'\"\' -f 2 | cut -d \'/\' -f 1"
   register:          docker_mysql_ip_stdout
