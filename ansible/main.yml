@@ -1,6 +1,6 @@
 ---
 - name:        set up ec2
-  hosts:       local
+  hosts:       controller
   roles:
     - aws
 - name:        run ansible

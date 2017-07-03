@@ -11,21 +11,17 @@
   with_items:       '{{ wordpress_dependencies.pip }}'
 
 - name:             download wordpress
-  get_url:          url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest='{{ wp_install }}-{{ wp_version }}'.tar.gz
-           sha256sum="{{ wp_sha256sum }}"
+  get_url:          url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest={{ wp_install }}-{{ wp_version }}.tar.gz
+           sha256sum='{{ wp_sha256sum }}'
 
 - name:             extract archive
   command:          chdir=/srv/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates={{ wp_install }}
 
-- name:             add group "wordpress"
+- name:             add group wordpress
   group:            name=wordpress
 
-- name:             add user "wordpress"
+- name:             add user wordpress
   user:             name=wordpress group=wordpress home='{{ wp_install }}'
-
-- name:             Fetch random salts for WordPress config
-  command:          curl https://api.wordpress.org/secret-key/1.1/salt/
-  register:         "wp_salt"
 
 - name:             create wordpress database
   mysql_db:
@@ -40,6 +36,8 @@
   - download weather information
   - create wordpress weather post file
   - create wordpress weather post
+# The creation of the database is a good indicator for the wordpress
+# installation being new, and thus creating the weather post.
 
 - name:             create wordpress database user
   mysql_user:
@@ -51,7 +49,11 @@
     host:           '{{ docker_gateway_ip }}'
     login_password: '{{ mysql_root_password }}'
     login_host:     '{{ docker_mysql_ip }}'
-  notify:           restart php-fpm
+
+# We need to register the output into a variable, so get_url won't work.
+- name:             Fetch random salts for WordPress config
+  command:          curl https://api.wordpress.org/secret-key/1.1/salt/
+  register:         'wp_salt'
 
 - name:             copy wordpress config file
   template:         src=wp-config.php dest='{{ wp_install }}'
@@ -68,5 +70,5 @@
 - name:             download wp-cli
   get_url:
     url:            https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    dest:           /bin/wp
+    dest:           '{{ wp_cli }}'
     mode:           0775

@@ -11,6 +11,7 @@ wp_home: 'https://{{ inventory_hostname }}'
 wp_title: An Example WordPress
 wp_admin_email: emiller@cleo.com
 wp_install: /srv/wordpress
+wp_cli: /usr/bin/wp
 
 metaweather_woeid: 2379574
 
@@ -40,13 +41,14 @@ aws_image: '{{ aws_amazon_linux_image }}'
 aws_instance_type: t2.micro
 aws_region: us-east-1
 
+ec2_tag: wp
+
 aws_dependencies:
   pip:
   - boto
 
 docker_dependencies:
   yum:
-  - epel-release
   - python
   - python-virtualenv
   - python-pip
@@ -55,7 +57,6 @@ docker_dependencies:
 
 mysql_dependencies:
   yum:
-  - docker
   - jq
   pip:
   - docker-py
@@ -67,7 +68,6 @@ nginx_dependencies:
 
 wordpress_dependencies:
   yum:
-  - mysql
   - mysql-devel
   - gcc
   - php
