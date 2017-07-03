@@ -40,6 +40,8 @@ aws_image: '{{ aws_amazon_linux_image }}'
 aws_instance_type: t2.micro
 aws_region: us-east-1
 
+ec2_tag: wp
+
 aws_dependencies:
   pip:
   - boto
